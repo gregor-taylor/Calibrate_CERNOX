@@ -44,12 +44,13 @@ SIM900_mf=SIM900(SIM900_add)
 SIM900_mf.write(SIM921_slot, 'CINI '+curve_to_update+', '+curve_to_update+', '+curve_string)
 
 #Add cal points
-#Note points must be added in incresing resistance value according to SIM921 docs
+#Note points must be added in increasing resistance value according to SIM921 docs
 for i in range(len(temp_list)-1, -1, -1):
     string_to_write='CAPT '+curve_to_update+', '+rest_list[i]+', '+temp_list[i]
     SIM900_mf.write(SIM921_slot, string_to_write)
 
 #Check the curve
+print('Calibration finished')
 print(SIM900_mf.ask(SIM921_slot, 'CINI? 1'))
 
 #Option to read it back and plot it to check
