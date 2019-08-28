@@ -19,7 +19,7 @@ SIM900_add = 'ASRL1'
 SIM921_slot= '5'
 curve_to_update = '1' #1 to 3
 curve_type='LINEAR'
-curve_string='1KCAL'
+curve_string='COOL'
 #Get data curve
 temp_list=[]
 rest_list=[]
@@ -34,6 +34,8 @@ with open(CalFile) as calfile:
 
 temp_arr=np.asarray(temp_list, dtype='float')
 rest_arr=np.asarray(rest_list, dtype='float')
+#rest_arr=np.log10(rest_arr)
+
 #SIM900 needs rounding of lakeshore values to take them
 temp_arr = np.round(temp_arr, 5)
 rest_arr = np.round(rest_arr, 5)
@@ -43,7 +45,7 @@ plt.show()
 
 #Initialise cal
 SIM900_mf=SIM900(SIM900_add)
-SIM900_mf.write(SIM921_slot, 'CINI '+curve_to_update+', '+curve_to_update+', '+curve_string)
+SIM900_mf.write(SIM921_slot, 'CINI '+curve_to_update+', '+curve_type+', '+curve_string)
 sleep(1)
 #Add cal points
 #Note points must be added in increasing resistance value according to SIM921 docs
@@ -60,6 +62,7 @@ SIM900_mf.write(SIM921_slot, 'CURV '+curve_to_update)
 #Set the temp to be displayed
 SIM900_mf.write(SIM921_slot, 'DTEM ON')
 
+
 #Option to read it back and plot it to check
 rb_temp=[]
 rb_rest=[]
@@ -73,3 +76,4 @@ rb_rest_arr=np.asarray(rb_rest, dtype='float')
 rb_temp_arr=np.asarray(rb_temp, dtype='float')
 plt.loglog(rb_temp_arr, rb_rest_arr)
 plt.show()
+
